@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TextInput, Button } from "react-native";
-import { styles } from "../styles";
+import { userInputStyles as styles } from "../styles/userInputStyles";
 
 export default props => {
   return (
@@ -8,7 +8,7 @@ export default props => {
       <TextInput
         style={styles.placeInput}
         value={props.placeName}
-        placeholder="Add text here"
+        placeholder="Add your favorite place here"
         onChangeText={props.placeNameChangedHandler}
         underlineColorAndroid="black"
       />
