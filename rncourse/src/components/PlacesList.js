@@ -10,7 +10,7 @@ export default props => {
       data={props.places}
       renderItem={info => (
         <ListItem
-          placeName={info.item.name}
+          placeName={info.item.placeName}
           placeImage={info.item.image}
           onItemPressed={() => props.onItemSelected(info.item.key)}
         />

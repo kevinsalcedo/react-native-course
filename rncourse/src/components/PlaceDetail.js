@@ -9,7 +9,7 @@ export default props => {
     modalContent = (
       <View>
         <Image source={props.selectedPlace.image} style={styles.modalImage} />
-        <Text style={styles.modalName}>{props.selectedPlace.name}</Text>
+        <Text style={styles.modalName}>{props.selectedPlace.placeName}</Text>
       </View>
     );
   }
