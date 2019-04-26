@@ -12,5 +12,8 @@ export const placesDetailStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 28
+  },
+  deleteButton: {
+    alignItems: "center"
   }
 });
