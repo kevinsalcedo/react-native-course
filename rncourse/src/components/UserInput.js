@@ -2,7 +2,7 @@ import React from "react";
 import { View, TextInput, Button } from "react-native";
 import { userInputStyles as styles } from "../styles/userInputStyles";
 
-class UserInput extends Component {
+class UserInput extends React.Component {
   state = {
     placeName: ""
   };

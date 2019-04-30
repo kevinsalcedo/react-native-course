@@ -2,8 +2,7 @@ import * as actions from "../actions";
 import * as types from "../actions/types";
 
 const INITIAL_STATE = {
-  places: [],
-  place: null
+  places: []
 };
 
 export default (state = INITIAL_STATE, action) => {
