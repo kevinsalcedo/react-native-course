@@ -1,25 +1,43 @@
 import React from "react";
 import { View, Text, Button, Image, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
+import { deletePlace } from "../store/actions";
 import Icon from "react-native-vector-icons/Ionicons";
 import { placesDetailStyles as styles } from "../styles/placesDetailStyles";
 
-export default props => {
-  return (
-    <View style={styles.modalContainer}>
-      <Image source={props.selectedPlace.image} style={styles.modalImage} />
-      <Text style={styles.modalName}>{props.selectedPlace.placeName}</Text>
-      <View>
-        <TouchableOpacity>
-          <View style={styles.deleteButton}>
-            <Icon
-              size={30}
-              name="ios-trash"
-              color="red"
-              onPress={props.onItemDeleted}
-            />
-          </View>
-        </TouchableOpacity>
+class PlaceDetail extends React.Component {
+  itemDeletedHandler = () => {
+    this.props.deletePlace(this.props.selectedPlace.key);
+    this.props.navigator.pop();
+  };
+  render() {
+    return (
+      <View style={styles.modalContainer}>
+        <Image
+          source={this.props.selectedPlace.image}
+          style={styles.modalImage}
+        />
+        <Text style={styles.modalName}>
+          {this.props.selectedPlace.placeName}
+        </Text>
+        <View>
+          <TouchableOpacity onPress={this.itemDeletedHandler}>
+            <View style={styles.deleteButton}>
+              <Icon
+                size={30}
+                name="ios-trash"
+                color="red"
+                onPress={this.props.onItemDeleted}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+}
+
+export default connect(
+  null,
+  { deletePlace }
+)(PlaceDetail);

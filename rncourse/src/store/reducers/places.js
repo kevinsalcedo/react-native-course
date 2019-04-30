@@ -21,8 +21,7 @@ export default (state = INITIAL_STATE, action) => {
     case types.DELETE_PLACE:
       return {
         ...state,
-        places: state.places.filter(place => place.key !== state.place.key),
-        place: null
+        places: state.places.filter(place => place.key !== action.payload)
       };
     default:
       return state;
