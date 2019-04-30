@@ -25,16 +25,6 @@ export default (state = INITIAL_STATE, action) => {
         places: state.places.filter(place => place.key !== state.place.key),
         place: null
       };
-    case types.SELECT_PLACE:
-      return {
-        ...state,
-        place: state.places.find(place => place.key === action.payload)
-      };
-    case types.DESELECT_PLACE:
-      return {
-        ...state,
-        place: null
-      };
     default:
       return state;
   }
