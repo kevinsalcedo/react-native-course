@@ -19,6 +19,10 @@ import PickImage from "../components/PickImage";
 import PickLocation from "../components/PickLocation";
 
 class SharePlace extends React.Component {
+  static navigatorStyle = {
+    navBarButtonColor: "orange"
+  };
+
   state = {
     placeName: ""
   };

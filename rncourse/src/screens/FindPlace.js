@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import PlacesList from "../components/PlacesList";
 
 class FindPlace extends React.Component {
+  static navigatorStyle = {
+    navBarButtonColor: "orange"
+  };
+
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.setOnNavigatorEvent);
