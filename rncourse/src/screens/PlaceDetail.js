@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Button, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  TouchableOpacity,
+  Platform
+} from "react-native";
 import { connect } from "react-redux";
 import { deletePlace } from "../store/actions";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -25,7 +32,7 @@ class PlaceDetail extends React.Component {
             <View style={styles.deleteButton}>
               <Icon
                 size={30}
-                name="ios-trash"
+                name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
                 color="red"
                 onPress={this.props.onItemDeleted}
               />
