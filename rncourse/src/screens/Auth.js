@@ -4,6 +4,7 @@ import DefaultInput from "../components/UI/DefaultInput";
 import startMainTabs from "./startMainTabs";
 import HeadingText from "../components/UI/HeadingText";
 import MainText from "../components/UI/MainText";
+import ButtonWithBackground from "../components/UI/ButtonWithBackground";
 import lagoon from "../assets/lagoon.jpg";
 
 class AuthScreen extends React.Component {
@@ -18,7 +19,9 @@ class AuthScreen extends React.Component {
           <MainText>
             <HeadingText>Please Log In</HeadingText>
           </MainText>
-          <Button title="Switch to Login" />
+          <ButtonWithBackground color="#29aaf4">
+            Switch to Login
+          </ButtonWithBackground>
           <View style={styles.inputContainer}>
             <DefaultInput
               placeholder="Your Email Address"
@@ -27,7 +30,9 @@ class AuthScreen extends React.Component {
             <DefaultInput placeholder="Password" style={styles.input} />
             <DefaultInput placeholder="Confirm Password" style={styles.input} />
           </View>
-          <Button title="Submit" onPress={this.loginHandler} />
+          <ButtonWithBackground color="#29aaf4" onPress={this.loginHandler}>
+            Log In
+          </ButtonWithBackground>
         </View>
       </ImageBackground>
     );
