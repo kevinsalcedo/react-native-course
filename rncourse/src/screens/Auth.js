@@ -11,12 +11,37 @@ import startMainTabs from "./startMainTabs";
 import HeadingText from "../components/UI/HeadingText";
 import MainText from "../components/UI/MainText";
 import ButtonWithBackground from "../components/UI/ButtonWithBackground";
+import validate from "../utility/validation";
 import lagoon from "../assets/lagoon.jpg";
 
 class AuthScreen extends React.Component {
   state = {
-    viewMode: Dimensions.get("window").height > 500 ? "portrait" : "landscape"
+    viewMode: Dimensions.get("window").height > 500 ? "portrait" : "landscape",
+    controls: {
+      email: {
+        value: "",
+        valid: false,
+        validationRules: {
+          isEmail: true
+        }
+      },
+      password: {
+        value: "",
+        valid: false,
+        validationRules: {
+          minLength: 6
+        }
+      },
+      confirmPassword: {
+        value: "",
+        valid: "",
+        validationRules: {
+          equalTo: "password"
+        }
+      }
+    }
   };
+
   constructor(props) {
     super(props);
 
@@ -35,6 +60,52 @@ class AuthScreen extends React.Component {
 
   loginHandler = () => {
     startMainTabs();
+  };
+
+  changeTextHandler = (key, value) => {
+    let connectedValue = {};
+    if (this.state.controls[key].validationRules.equalTo) {
+      const equalControl = this.state.controls[key].validationRules.equalTo;
+      const equalValue = this.state.controls[equalControl].value;
+      connectedValue = {
+        ...connectedValue,
+        equalTo: equalValue
+      };
+    }
+    if (key === "password") {
+      connectedValue = {
+        ...connectedValue,
+        equalTo: value
+      };
+    }
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          confirmPassword: {
+            ...prevState.controls.confirmPassword,
+            valid:
+              key === "password"
+                ? validate(
+                    prevState.controls.confirmPassword.value,
+                    prevState.controls.confirmPassword.validationRules,
+                    connectedValue
+                  )
+                : prevState.controls.confirmPassword.valid
+          },
+          [key]: {
+            ...prevState.controls[key],
+            value: value,
+            valid: validate(
+              value,
+              prevState.controls[key].validationRules,
+              connectedValue
+            ),
+            touched: true
+          }
+        }
+      };
+    });
   };
 
   render() {
@@ -58,6 +129,10 @@ class AuthScreen extends React.Component {
             <DefaultInput
               placeholder="Your Email Address"
               style={styles.input}
+              value={this.state.controls.email.value}
+              onChangeText={value => this.changeTextHandler("email", value)}
+              valid={this.state.controls.email.valid}
+              touched={this.state.controls.email.touched}
             />
             <View
               style={
@@ -73,7 +148,16 @@ class AuthScreen extends React.Component {
                     : styles.landscapePasswordWrapper
                 }
               >
-                <DefaultInput placeholder="Password" style={styles.input} />
+                <DefaultInput
+                  placeholder="Password"
+                  style={styles.input}
+                  value={this.state.controls.password.value}
+                  onChangeText={value =>
+                    this.changeTextHandler("password", value)
+                  }
+                  valid={this.state.controls.password.valid}
+                  touched={this.state.controls.password.touched}
+                />
               </View>
               <View
                 style={
@@ -85,11 +169,25 @@ class AuthScreen extends React.Component {
                 <DefaultInput
                   placeholder="Confirm Password"
                   style={styles.input}
+                  value={this.state.controls.confirmPassword.value}
+                  onChangeText={value =>
+                    this.changeTextHandler("confirmPassword", value)
+                  }
+                  valid={this.state.controls.confirmPassword.valid}
+                  touched={this.state.controls.confirmPassword.touched}
                 />
               </View>
             </View>
           </View>
-          <ButtonWithBackground color="#29aaf4" onPress={this.loginHandler}>
+          <ButtonWithBackground
+            color="#29aaf4"
+            onPress={this.loginHandler}
+            disabled={
+              !this.state.controls.confirmPassword.valid &&
+              !this.state.controls.password.valid &&
+              !this.state.controls.email.valid
+            }
+          >
             Log In
           </ButtonWithBackground>
         </View>

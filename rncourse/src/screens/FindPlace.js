@@ -86,7 +86,7 @@ class FindPlace extends React.Component {
           onPress={this.placesSearchHandler}
         >
           <View>
-            <Text style={styles.searchButtonText}>Find Places</Text>
+            <Text style={styles.searchButtonText}>Show List</Text>
           </View>
         </TouchableOpacity>
       </Animated.View>
