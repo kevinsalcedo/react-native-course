@@ -4,8 +4,8 @@ import MapView from "react-native-maps";
 
 class PickLocation extends React.Component {
   state = {
-    focusedRegion: {
-      latitude: 27.7900352,
+    focusedLocation: {
+      latitude: 37.7900352,
       longitude: -122.4013726,
       latitudeDelta: 0.0122,
       longitudeDelta:
@@ -16,7 +16,10 @@ class PickLocation extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <MapView initialRegion={this.state.focusedRegion} style={styles.map} />
+        <MapView
+          initialRegion={this.state.focusedLocation}
+          style={styles.map}
+        />
         <View style={styles.button}>
           <Button title="Locate Me" onPress={() => alert("Locate Me")} />
         </View>
