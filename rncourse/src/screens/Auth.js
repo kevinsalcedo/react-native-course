@@ -153,6 +153,7 @@ class AuthScreen extends React.Component {
             }
             valid={this.state.controls.confirmPassword.valid}
             touched={this.state.controls.confirmPassword.touched}
+            secureTextEntry
           />
         </View>
       );
@@ -175,6 +176,9 @@ class AuthScreen extends React.Component {
               onChangeText={value => this.changeTextHandler("email", value)}
               valid={this.state.controls.email.valid}
               touched={this.state.controls.email.touched}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
             />
             <View
               style={
@@ -201,6 +205,7 @@ class AuthScreen extends React.Component {
                   }
                   valid={this.state.controls.password.valid}
                   touched={this.state.controls.password.touched}
+                  secureTextEntry
                 />
               </View>
               {confirmPasswordControl}
