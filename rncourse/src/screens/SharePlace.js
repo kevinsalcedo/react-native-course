@@ -14,9 +14,9 @@ import { addPlace } from "../store/actions";
 import UserInput from "../components/UserInput";
 import MainText from "../components/UI/MainText";
 import HeadingText from "../components/UI/HeadingText";
-import lagoon from "../assets/lagoon.jpg";
 import PickImage from "../components/PickImage";
 import PickLocation from "../components/PickLocation";
+import validate from "../utility/validation";
 
 class SharePlace extends React.Component {
   static navigatorStyle = {
@@ -24,7 +24,20 @@ class SharePlace extends React.Component {
   };
 
   state = {
-    placeName: ""
+    controls: {
+      placeName: {
+        value: "",
+        valid: false,
+        touched: false,
+        validationRules: {
+          notEmpty: true
+        }
+      },
+      location: {
+        value: null,
+        valid: false
+      }
+    }
   };
   constructor(props) {
     super(props);
@@ -42,15 +55,38 @@ class SharePlace extends React.Component {
   };
 
   placeAddedHandler = () => {
-    if (this.state.placeName.trim() === "") {
-      return;
+    if (this.state.controls.placeName.value.trim() !== "") {
+      this.props.addPlace(this.state.controls.placeName.value);
     }
-    this.props.addPlace(this.state.placeName);
   };
 
   placeNameChangedHandler = val => {
-    this.setState({
-      placeName: val
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          placeName: {
+            ...prevState.controls.placeName,
+            value: val,
+            valid: validate(val, prevState.controls.placeName.validationRules),
+            touched: true
+          }
+        }
+      };
+    });
+  };
+
+  locationPickedHandler = location => {
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          location: {
+            value: location,
+            valid: true
+          }
+        }
+      };
     });
   };
   render() {
@@ -61,13 +97,17 @@ class SharePlace extends React.Component {
             <HeadingText>Share a Place With Us!</HeadingText>
           </MainText>
           <PickImage />
-          <PickLocation />
+          <PickLocation onLocationPick={this.locationPickedHandler} />
           <UserInput
-            placeName={this.state.placeName}
+            placeName={this.state.controls.placeName}
             onChangeText={this.placeNameChangedHandler}
           />
           <View style={styles.button}>
-            <Button title="Share" onPress={this.placeAddedHandler} />
+            <Button
+              title="Share"
+              onPress={this.placeAddedHandler}
+              disabled={!this.state.controls.placeName.valid}
+            />
           </View>
         </View>
       </ScrollView>
