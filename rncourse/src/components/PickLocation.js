@@ -32,6 +32,10 @@ class PickLocation extends React.Component {
         locationChosen: true
       };
     });
+    this.props.onLocationPck({
+      latitude: coords.latitude,
+      longitutde: coords.longitude
+    });
   };
 
   getLocationHandler = () => {

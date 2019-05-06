@@ -55,9 +55,9 @@ class SharePlace extends React.Component {
   };
 
   placeAddedHandler = () => {
-    if (this.state.controls.placeName.value.trim() !== "") {
-      this.props.addPlace(this.state.controls.placeName.value);
-    }
+    this.props.addPlace(
+      this.state.controls.placeName.value.this.state.controls.location.value
+    );
   };
 
   placeNameChangedHandler = val => {
@@ -106,7 +106,10 @@ class SharePlace extends React.Component {
             <Button
               title="Share"
               onPress={this.placeAddedHandler}
-              disabled={!this.state.controls.placeName.valid}
+              disabled={
+                !this.state.controls.placeName.valid ||
+                !this.state.controls.location.valid
+              }
             />
           </View>
         </View>
