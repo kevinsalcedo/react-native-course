@@ -56,7 +56,8 @@ class SharePlace extends React.Component {
 
   placeAddedHandler = () => {
     this.props.addPlace(
-      this.state.controls.placeName.value.this.state.controls.location.value
+      this.state.controls.placeName.value,
+      this.state.controls.location.value
     );
   };
 

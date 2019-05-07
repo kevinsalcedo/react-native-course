@@ -11,6 +11,7 @@ import {
 import { connect } from "react-redux";
 import { deletePlace } from "../store/actions";
 import Icon from "react-native-vector-icons/Ionicons";
+import MapView from "react-native-maps";
 
 class PlaceDetail extends React.Component {
   state = {
@@ -40,33 +41,41 @@ class PlaceDetail extends React.Component {
     return (
       <View
         style={[
+          styles.container,
           this.state.viewMode === "portrait"
-            ? styles.portraitWindow
-            : styles.landscapeWindow
+            ? styles.portraitContainer
+            : styles.landscapeContainer
         ]}
       >
-        <View
-          style={
-            this.state.viewMode === "portrait"
-              ? styles.portraitContainer
-              : styles.landscapeContainer
-          }
-        >
-          <Image
-            source={this.props.selectedPlace.image}
-            style={styles.modalImage}
-          />
+        <View style={styles.placeDetailContainer}>
+          <View style={styles.subContainer}>
+            <Image
+              source={this.props.selectedPlace.image}
+              style={styles.placeImage}
+            />
+          </View>
+          <View style={styles.subContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                ...this.props.selectedPlace.location,
+                latitudeDelta: 0.0122,
+                longitudeDelta:
+                  (Dimensions.get("window").width /
+                    Dimensions.get("window").height) *
+                  0.0122
+              }}
+            >
+              <MapView.Marker coordinate={this.props.selectedPlace.location} />
+            </MapView>
+          </View>
         </View>
-        <View
-          styles={
-            this.state.viewMode === "portrait"
-              ? styles.portraitContainer
-              : styles.landscapeContainer
-          }
-        >
-          <Text style={styles.modalName}>
-            {this.props.selectedPlace.placeName}
-          </Text>
+        <View styles={styles.subContainer}>
+          <View>
+            <Text style={styles.placeName}>
+              {this.props.selectedPlace.placeName}
+            </Text>
+          </View>
           <View>
             <TouchableOpacity onPress={this.itemDeletedHandler}>
               <View style={styles.deleteButton}>
@@ -74,7 +83,6 @@ class PlaceDetail extends React.Component {
                   size={30}
                   name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
                   color="red"
-                  onPress={this.props.onItemDeleted}
                 />
               </View>
             </TouchableOpacity>
@@ -86,11 +94,21 @@ class PlaceDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  modalImage: {
-    width: "100%",
-    height: 200
+  container: {
+    margin: 22,
+    flex: 1
   },
-  modalName: {
+  portraitContainer: {
+    flexDirection: "column"
+  },
+  landscapeContainer: {
+    flexDirection: "row"
+  },
+  placeImage: {
+    width: "100%",
+    height: "100%"
+  },
+  placeName: {
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 28
@@ -98,23 +116,14 @@ const styles = StyleSheet.create({
   deleteButton: {
     alignItems: "center"
   },
-  portraitWindow: {
-    margin: 22,
-    flexDirection: "column"
+  subContainer: {
+    flex: 1
   },
-  landscapeWindow: {
-    margin: 22,
-    flexDirection: "row",
-    justifyContent: "space-evenly"
+  map: {
+    ...StyleSheet.absoluteFillObject
   },
-  portraitContainer: {
-    flexDirection: "column",
-    width: "100%",
-    justifyContent: "flex-start"
-  },
-  landscapeContainer: {
-    flexDirection: "row",
-    width: "45%"
+  placeDetailContainer: {
+    flex: 2
   }
 });
 

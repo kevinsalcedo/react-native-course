@@ -7,7 +7,7 @@ const UserInput = props => {
       placeholder="Place Name"
       value={props.placeName.value}
       valid={props.placeName.valid}
-      touched={props.placeData.touched}
+      touched={props.placeName.touched}
       onChangeText={props.onChangeText}
     />
   );
