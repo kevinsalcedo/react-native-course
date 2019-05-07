@@ -17,6 +17,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         places: action.payload.places
       };
+    case types.REMOVE_PLACE:
+      return {
+        ...state,
+        places: state.places.filter(place => place.key !== action.payload.key)
+      };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import { SET_PLACES } from "./types";
+import { SET_PLACES, REMOVE_PLACE } from "./types";
 import { uiStartLoading, uiStopLoading } from "./index";
 
 export const addPlace = (placeName, location, image) => {
@@ -79,9 +79,35 @@ export const getPlaces = () => {
   };
 };
 
+// export const deletePlace = key => {
+//   return {
+//     type: DELETE_PLACE,
+//     payload: key
+//   };
+// };
+
 export const deletePlace = key => {
+  return dispatch => {
+    dispatch(removePlace(key));
+    fetch(
+      `https://react-native-1556907249873.firebaseio.com/places/${key}.json`,
+      {
+        method: "DELETE"
+      }
+    )
+      .catch(err => {
+        alert("Failed to delete", err);
+      })
+      .then(res => res.json())
+      .then(parsedRes => {});
+  };
+};
+
+export const removePlace = key => {
   return {
-    type: DELETE_PLACE,
-    payload: key
+    type: REMOVE_PLACE,
+    payload: {
+      key: key
+    }
   };
 };
