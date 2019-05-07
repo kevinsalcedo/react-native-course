@@ -1,4 +1,5 @@
 import { ADD_PLACE, DELETE_PLACE } from "./types";
+import { uiStartLoading, uiStopLoading } from "./index";
 
 export const addPlace = (placeName, location, image) => {
   // return {
@@ -10,6 +11,7 @@ export const addPlace = (placeName, location, image) => {
   //   }
   // };
   return dispatch => {
+    dispatch(uiStartLoading());
     fetch(
       "https://us-central1-react-native-1556907249873.cloudfunctions.net/storeImage",
       {
@@ -19,7 +21,10 @@ export const addPlace = (placeName, location, image) => {
         })
       }
     )
-      .catch(err => alert("Failed", err))
+      .catch(err => {
+        alert("Failed", err);
+        dispatch(uiStopLoading());
+      })
       .then(res => res.json())
       .then(parsedRes => {
         const placeData = {
@@ -32,9 +37,14 @@ export const addPlace = (placeName, location, image) => {
           method: "POST",
           body: JSON.stringify(placeData)
         })
-          .catch(err => alert("Failed", err))
+          .catch(err => {
+            alert("Failed", err);
+            dispatch(uiStopLoading());
+          })
           .then(res => res.json())
-          .then(parsedRes => {});
+          .then(parsedRes => {
+            dispatch(uiStopLoading());
+          });
       });
   };
 };
