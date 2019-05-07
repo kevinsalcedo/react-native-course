@@ -36,6 +36,10 @@ class SharePlace extends React.Component {
       location: {
         value: null,
         valid: false
+      },
+      image: {
+        value: null,
+        valid: false
       }
     }
   };
@@ -57,7 +61,8 @@ class SharePlace extends React.Component {
   placeAddedHandler = () => {
     this.props.addPlace(
       this.state.controls.placeName.value,
-      this.state.controls.location.value
+      this.state.controls.location.value,
+      this.state.controls.image.value
     );
   };
 
@@ -90,6 +95,21 @@ class SharePlace extends React.Component {
       };
     });
   };
+
+  imagePickedHandler = image => {
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          image: {
+            value: image,
+            valid: true
+          }
+        }
+      };
+    });
+  };
+
   render() {
     return (
       <ScrollView>
@@ -97,7 +117,7 @@ class SharePlace extends React.Component {
           <MainText>
             <HeadingText>Share a Place With Us!</HeadingText>
           </MainText>
-          <PickImage />
+          <PickImage onImagePicked={this.imagePickedHandler} />
           <PickLocation onLocationPick={this.locationPickedHandler} />
           <UserInput
             placeName={this.state.controls.placeName}
@@ -109,7 +129,8 @@ class SharePlace extends React.Component {
               onPress={this.placeAddedHandler}
               disabled={
                 !this.state.controls.placeName.valid ||
-                !this.state.controls.location.valid
+                !this.state.controls.location.valid ||
+                !this.state.controls.image.valid
               }
             />
           </View>

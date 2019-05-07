@@ -1,11 +1,12 @@
 import { ADD_PLACE, DELETE_PLACE } from "./types";
 
-export const addPlace = (placeName, location) => {
+export const addPlace = (placeName, location, image) => {
   return {
     type: ADD_PLACE,
     payload: {
       placeName,
-      location
+      location,
+      image
     }
   };
 };

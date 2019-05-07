@@ -14,7 +14,7 @@ export default (state = INITIAL_STATE, action) => {
           key: Math.random().toString(),
           placeName: action.payload.placeName,
           image: {
-            uri: "https://c1.staticflickr.com/5/4096/4744241983_34023bf303.jpg"
+            uri: action.payload.image.uri
           },
           location: action.payload.location
         })
