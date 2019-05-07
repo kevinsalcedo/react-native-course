@@ -1,4 +1,4 @@
-import { ADD_PLACE, DELETE_PLACE } from "./types";
+import { SET_PLACES } from "./types";
 import { uiStartLoading, uiStopLoading } from "./index";
 
 export const addPlace = (placeName, location, image) => {
@@ -28,7 +28,7 @@ export const addPlace = (placeName, location, image) => {
       .then(res => res.json())
       .then(parsedRes => {
         const placeData = {
-          name: placeName,
+          placeName: placeName,
           location: location,
           image: parsedRes.imageUrl
         };
@@ -45,6 +45,36 @@ export const addPlace = (placeName, location, image) => {
           .then(parsedRes => {
             dispatch(uiStopLoading());
           });
+      });
+  };
+};
+
+export const setPlaces = places => {
+  return {
+    type: SET_PLACES,
+    payload: {
+      places: places
+    }
+  };
+};
+export const getPlaces = () => {
+  return dispatch => {
+    fetch("https://react-native-1556907249873.firebaseio.com/places.json")
+      .catch(err => {
+        alert("Failed to get", err);
+      })
+      .then(res => res.json())
+      .then(parsedRes => {
+        const places = [];
+        for (let key in parsedRes) {
+          places.push({
+            ...parsedRes[key],
+            key: key,
+            image: { uri: parsedRes[key].image }
+          });
+        }
+
+        dispatch(setPlaces(places));
       });
   };
 };

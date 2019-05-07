@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import PlacesList from "../components/PlacesList";
+import { getPlaces } from "../store/actions";
 
 class FindPlace extends React.Component {
   static navigatorStyle = {
@@ -23,6 +24,10 @@ class FindPlace extends React.Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.setOnNavigatorEvent);
+  }
+
+  componentDidMount() {
+    this.props.getPlaces();
   }
 
   setOnNavigatorEvent = event => {
@@ -137,4 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 26
   }
 });
-export default connect(mapStateToProps)(FindPlace);
+export default connect(
+  mapStateToProps,
+  { getPlaces }
+)(FindPlace);
