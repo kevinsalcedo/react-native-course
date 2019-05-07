@@ -10,17 +10,6 @@ export const addPlace = (placeName, location, image) => {
   //   }
   // };
   return dispatch => {
-    // const placeData = {
-    //   name: placeName,
-    //   location: location
-    // };
-    // fetch("https://react-native-1556907249873.firebaseio.com/places.json", {
-    //   method: "POST",
-    //   body: JSON.stringify(placeData)
-    // })
-    //   .catch(err => alert("Failed", err))
-    //   .then(res => res.json())
-    //   .then(parsedRes => {});
     fetch(
       "https://us-central1-react-native-1556907249873.cloudfunctions.net/storeImage",
       {
@@ -32,7 +21,21 @@ export const addPlace = (placeName, location, image) => {
     )
       .catch(err => alert("Failed", err))
       .then(res => res.json())
-      .then(parsedRes => {});
+      .then(parsedRes => {
+        const placeData = {
+          name: placeName,
+          location: location,
+          image: parsedRes.imageUrl
+        };
+
+        fetch("https://react-native-1556907249873.firebaseio.com/places.json", {
+          method: "POST",
+          body: JSON.stringify(placeData)
+        })
+          .catch(err => alert("Failed", err))
+          .then(res => res.json())
+          .then(parsedRes => {});
+      });
   };
 };
 
