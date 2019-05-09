@@ -6,10 +6,10 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  ActivityIndicator,
   TouchableWithoutFeedback
 } from "react-native";
 import DefaultInput from "../components/UI/DefaultInput";
-import startMainTabs from "./startMainTabs";
 import HeadingText from "../components/UI/HeadingText";
 import MainText from "../components/UI/MainText";
 import ButtonWithBackground from "../components/UI/ButtonWithBackground";
@@ -69,7 +69,6 @@ class AuthScreen extends React.Component {
       password: this.state.controls.password.value
     };
     this.props.tryAuth(authData);
-    startMainTabs();
   };
 
   changeTextHandler = (key, value) => {
@@ -129,6 +128,20 @@ class AuthScreen extends React.Component {
   render() {
     let headingText = null;
     let confirmPasswordControl = null;
+    let submitButton = (
+      <ButtonWithBackground
+        color="#29aaf4"
+        onPress={this.loginHandler}
+        disabled={
+          !this.state.controls.email.valid ||
+          !this.state.controls.password.valid ||
+          (!this.state.controls.confirmPassword.valid &&
+            this.state.authMode === "signup")
+        }
+      >
+        Log In
+      </ButtonWithBackground>
+    );
 
     if (this.state.viewMode === "portrait") {
       headingText = (
@@ -159,6 +172,10 @@ class AuthScreen extends React.Component {
           />
         </View>
       );
+    }
+
+    if (this.props.isLoading) {
+      submitButton = <ActivityIndicator />;
     }
     return (
       <ImageBackground source={lagoon} style={styles.backgroundImage}>
@@ -214,18 +231,7 @@ class AuthScreen extends React.Component {
                 {confirmPasswordControl}
               </View>
             </View>
-            <ButtonWithBackground
-              color="#29aaf4"
-              onPress={this.loginHandler}
-              disabled={
-                !this.state.controls.email.valid ||
-                !this.state.controls.password.valid ||
-                (!this.state.controls.confirmPassword.valid &&
-                  this.state.authMode === "signup")
-              }
-            >
-              Log In
-            </ButtonWithBackground>
+            {submitButton}
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </ImageBackground>
@@ -270,7 +276,13 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapStateToProps = state => {
+  return {
+    isLoading: state.ui.isLoading
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { tryAuth }
 )(AuthScreen);
