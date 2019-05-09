@@ -39,20 +39,27 @@ export const tryAuth = (authData, authMode) => {
         if (!parsedRes.idToken) {
           alert(`Authentication failed: ${parsedRes.error.message}`);
         } else {
-          dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn));
+          dispatch(
+            authStoreToken(
+              parsedRes.idToken,
+              parsedRes.expiresIn,
+              parsedRes.refreshToken
+            )
+          );
           startMainTabs();
         }
       });
   };
 };
 
-export const authStoreToken = (token, expiresIn) => {
+export const authStoreToken = (token, expiresIn, refreshToken) => {
   return dispatch => {
     dispatch(authSetToken(token));
     const now = new Date();
     const expiryDate = now.getTime() + expiresIn * 1000;
     AsyncStorage.setItem("places:auth:token", token);
     AsyncStorage.setItem("places:auth:expiryDate", expiryDate.toString());
+    AsyncStorage.setItem("places:auth:refreshToken", refreshToken);
   };
 };
 
@@ -81,6 +88,7 @@ export const authGetToken = () => {
             }
             return AsyncStorage.getItem("places:auth:expiryDate");
           })
+          // Check to see if token is expired
           .then(expiryDate => {
             const parsedExpiryDate = new Date(parseInt(expiryDate));
             const now = new Date();
@@ -95,16 +103,56 @@ export const authGetToken = () => {
         resolve(token);
       }
     });
+    promise.catch(err => {
+      // If an invalid token is found, check the reresh token
+      AsyncStorage.getItem("places:auth:refreshToken")
+        .then(refreshToken => {
+          fetch("https://securetoken.googleapis.com/v1/token?key=" + apiKey, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "grant_type='refresh_token'&refresh_token=" + refreshToken
+          });
+        })
+        .catch(err => reject())
+        .then(res => res.json())
+        .then(parsedRes => {
+          // If successful, set the new id token and expiry date
+          if (parsedRes.id_token) {
+            dispatch(
+              authStoreToken(
+                parsedRes.id_token,
+                parsedRes.expires_in,
+                parsedRes.refresh_token
+              )
+            );
+          } else {
+            dispatch(authClearStorage());
+          }
+        });
+    });
     return promise;
   };
 };
 
+// Check to see if a token exists in AsyncStorage
+// Expects a persisted token from a prev login
 export const authAutoSignIn = () => {
   return dispatch => {
     dispatch(authGetToken())
+      .catch(err => console.log("Failed"))
       .then(token => {
         startMainTabs();
       })
       .catch(err => console.log("Failed to fetch token"));
+  };
+};
+
+// Remove data from AyncStorage
+export const authClearStorage = () => {
+  return dispatch => {
+    AsyncStorage.removeItem("places:auth:token");
+    AsyncStorage.removeItem("places:auth:expiryDate");
   };
 };
