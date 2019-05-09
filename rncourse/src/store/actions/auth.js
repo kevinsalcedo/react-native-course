@@ -141,11 +141,10 @@ export const authGetToken = () => {
 export const authAutoSignIn = () => {
   return dispatch => {
     dispatch(authGetToken())
-      .catch(err => console.log("Failed"))
       .then(token => {
         startMainTabs();
       })
-      .catch(err => console.log("Failed to fetch token"));
+      .catch(err => console.log("Failed to fetch token for auto sign-in"));
   };
 };
 

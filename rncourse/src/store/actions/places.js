@@ -7,7 +7,7 @@ export const addPlace = (placeName, location, image) => {
     dispatch(uiStartLoading());
     dispatch(authGetToken())
       .catch(() => {
-        alert("No valid token");
+        alert("Could not add. No valid token.");
       })
       .then(token => {
         authToken = token;
@@ -26,7 +26,7 @@ export const addPlace = (placeName, location, image) => {
       })
       .catch(err => {
         console.log(err);
-        alert("Something went wrong");
+        alert("Something went wrong while adding a place");
         dispatch(uiStopLoading());
       })
       .then(res => res.json())
@@ -51,7 +51,7 @@ export const addPlace = (placeName, location, image) => {
             dispatch(uiStopLoading());
           })
           .catch(err => {
-            alert("Something went wrong");
+            alert("Something went wrong while adding a place");
             console.log(err);
             dispatch(uiStopLoading());
           });
@@ -76,7 +76,7 @@ export const getPlaces = () => {
             token
         )
       )
-      .catch(() => alert("No token found"))
+      .catch(() => alert("Could not fetch. No token found."))
       .then(res => res.json())
       .then(parsedRes => {
         const places = [];
@@ -91,7 +91,7 @@ export const getPlaces = () => {
         dispatch(setPlaces(places));
       })
       .catch(err => {
-        alert("Something went wrong");
+        alert("Something went wrong while fetching places");
       });
   };
 };
@@ -108,7 +108,7 @@ export const deletePlace = key => {
           }
         );
       })
-      .catch(() => alert("No token found"))
+      .catch(() => alert("Could not delete. No token found."))
       .then(res => res.json())
       .then(parsedRes => {
         console.log(parsedRes);
