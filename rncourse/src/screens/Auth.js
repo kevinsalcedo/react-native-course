@@ -15,7 +15,7 @@ import MainText from "../components/UI/MainText";
 import ButtonWithBackground from "../components/UI/ButtonWithBackground";
 import validate from "../utility/validation";
 import { connect } from "react-redux";
-import { tryAuth } from "../store/actions";
+import { tryAuth, authAutoSignIn } from "../store/actions";
 import lagoon from "../assets/lagoon.jpg";
 
 class AuthScreen extends React.Component {
@@ -61,6 +61,10 @@ class AuthScreen extends React.Component {
 
   componentWillUnmount() {
     Dimensions.removeEventListener("change", this.updateStyles);
+  }
+
+  componentDidMount() {
+    this.props.authAutoSignIn();
   }
 
   loginHandler = () => {
@@ -284,5 +288,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { tryAuth }
+  { tryAuth, authAutoSignIn }
 )(AuthScreen);

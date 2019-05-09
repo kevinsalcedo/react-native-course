@@ -46,7 +46,7 @@ export const tryAuth = (authData, authMode) => {
   };
 };
 
-export const authStoreTOken = token => {
+export const authStoreToken = token => {
   return dispatch => {
     dispatch(authSetToken(token));
     AsyncStorage.setItem("places:auth:token", token);
@@ -70,6 +70,9 @@ export const authGetToken = () => {
         AsyncStorage.getItem("places:auth:token")
           .catch(err => reject())
           .then(tokenFromStorage => {
+            if (!tokenFromStorage) {
+              reject();
+            }
             dispatch(authSetToken(tokenFromStorage));
             resolve(tokenFromStorage);
           });
@@ -78,5 +81,15 @@ export const authGetToken = () => {
       }
     });
     return promise;
+  };
+};
+
+export const authAutoSignIn = () => {
+  return dispatch => {
+    dispatch(authGetToken())
+      .then(token => {
+        startMainTabs();
+      })
+      .catch(err => console.log("Failed to fetch token"));
   };
 };

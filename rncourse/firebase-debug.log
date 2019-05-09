@@ -1,0 +1,27 @@
+[debug] [2019-05-09T16:55:49.833Z] ----------------------------------------------------------------------
+[debug] [2019-05-09T16:55:49.835Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2019-05-09T16:55:49.835Z] CLI Version:   6.9.0
+[debug] [2019-05-09T16:55:49.835Z] Platform:      win32
+[debug] [2019-05-09T16:55:49.835Z] Node Version:  v10.15.3
+[debug] [2019-05-09T16:55:49.837Z] Time:          Thu May 09 2019 11:55:49 GMT-0500 (Central Daylight Time)
+[debug] [2019-05-09T16:55:49.837Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-05-09T16:55:49.855Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-05-09T16:55:49.857Z] > authorizing via signed-in user
+[debug] [2019-05-09T16:55:49.857Z] [iam] checking project react-native-1556907249873 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-05-09T16:55:49.859Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-05-09T16:55:49.859Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-05-09T16:55:51.509Z] Error: EPERM: operation not permitted, rename 'C:\Users\20821597\.config\configstore\firebase-tools.json.1323622096' -> 'C:\Users\20821597\.config\configstore\firebase-tools.json'
+    at Object.renameSync (fs.js:593:3)
+    at Function.writeFileSync [as sync] (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\write-file-atomic\index.js:124:8)
+    at Configstore.set (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\configstore\index.js:62:21)
+    at Configstore.set (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\configstore\index.js:93:11)
+    at Request._callback (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\lib\fetchMOTD.js:40:25)
+    at Request.self.callback (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\request\request.js:185:22)
+    at Request.emit (events.js:189:13)
+    at Request.EventEmitter.emit (domain.js:441:20)
+    at Request.<anonymous> (C:\Users\20821597\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\request\request.js:1161:10)
+    at Request.emit (events.js:189:13)
+[error] 
+[error] Error: An unexpected error has occurred.
