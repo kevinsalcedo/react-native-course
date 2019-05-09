@@ -3,29 +3,28 @@ import { uiStartLoading, uiStopLoading } from "./ui";
 import startMainTabs from "../../screens/startMainTabs";
 import apiKey from "../apiKey";
 
-export const tryAuth = authData => {
-  return dispatch => {
-    dispatch(authSignup(authData));
-  };
-};
-
-export const authSignup = authData => {
+export const tryAuth = (authData, authMode) => {
   return dispatch => {
     dispatch(uiStartLoading());
-    fetch(
-      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${apiKey}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: authData.email,
-          password: authData.password,
-          returnSecureToken: true
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+    let url =
+      "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=";
+
+    if (authMode === "login") {
+      url =
+        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=";
+    }
+
+    fetch(url + apiKey, {
+      method: "POST",
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      }),
+      headers: {
+        "Content-Type": "application/json"
       }
-    )
+    })
       .catch(err => {
         console.log(err);
         alert("Authentication failed");

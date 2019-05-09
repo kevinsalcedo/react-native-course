@@ -68,7 +68,7 @@ class AuthScreen extends React.Component {
       email: this.state.controls.email.value,
       password: this.state.controls.password.value
     };
-    this.props.tryAuth(authData);
+    this.props.tryAuth(authData, this.state.authMode);
   };
 
   changeTextHandler = (key, value) => {
