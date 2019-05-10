@@ -9,12 +9,14 @@ const authReducer = (state = initialState, action) => {
     case AUTH_SET_TOKEN:
       return {
         ...state,
-        token: action.payload.token
+        token: action.payload.token,
+        expiryDate: action.payload.expiryDate
       };
     case AUTH_REMOVE_TOKEN:
       return {
         ...state,
-        token: null
+        token: null,
+        expiryDate: null
       };
     default:
       return state;
