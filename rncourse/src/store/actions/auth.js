@@ -103,36 +103,44 @@ export const authGetToken = () => {
         resolve(token);
       }
     });
-    promise.catch(err => {
-      // If an invalid token is found, check the reresh token
-      AsyncStorage.getItem("places:auth:refreshToken")
-        .then(refreshToken => {
-          fetch("https://securetoken.googleapis.com/v1/token?key=" + apiKey, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "grant_type='refresh_token'&refresh_token=" + refreshToken
+    return promise
+      .catch(err => {
+        // If an invalid token is found, check the reresh token
+        return AsyncStorage.getItem("places:auth:refreshToken")
+          .then(refreshToken => {
+            fetch("https://securetoken.googleapis.com/v1/token?key=" + apiKey, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: "grant_type='refresh_token'&refresh_token=" + refreshToken
+            });
+          })
+          .catch(err => reject())
+          .then(res => res.json())
+          .then(parsedRes => {
+            // If successful, set the new id token and expiry date
+            if (parsedRes.id_token) {
+              dispatch(
+                authStoreToken(
+                  parsedRes.id_token,
+                  parsedRes.expires_in,
+                  parsedRes.refresh_token
+                )
+              );
+              return parsedRes.id_token;
+            } else {
+              dispatch(authClearStorage());
+            }
           });
-        })
-        .catch(err => reject())
-        .then(res => res.json())
-        .then(parsedRes => {
-          // If successful, set the new id token and expiry date
-          if (parsedRes.id_token) {
-            dispatch(
-              authStoreToken(
-                parsedRes.id_token,
-                parsedRes.expires_in,
-                parsedRes.refresh_token
-              )
-            );
-          } else {
-            dispatch(authClearStorage());
-          }
-        });
-    });
-    return promise;
+      })
+      .then(token => {
+        if (!token) {
+          throw new Error();
+        } else {
+          return token;
+        }
+      });
   };
 };
 
