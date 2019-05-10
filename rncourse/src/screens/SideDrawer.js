@@ -7,9 +7,14 @@ import {
   TouchableOpacity,
   Platform
 } from "react-native";
+import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
+import { authLogout } from "../store/actions";
 
 class SideDrawer extends React.Component {
+  onPressHandler = () => {
+    this.props.authLogout();
+  };
   render() {
     return (
       <View
@@ -18,7 +23,7 @@ class SideDrawer extends React.Component {
           { width: Dimensions.get("window").width * 0.8 }
         ]}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.onPressHandler}>
           <View style={styles.drawerItem}>
             <Icon
               name={Platform.OS === "android" ? "md-log-out" : "ios-log-out"}
@@ -51,4 +56,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SideDrawer;
+export default connect(
+  null,
+  { authLogout }
+)(SideDrawer);

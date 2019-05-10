@@ -34,13 +34,21 @@ Navigation.registerComponent(
   store,
   Provider
 );
-Navigation.registerComponent("awesome-places.SideDrawer", () => SideDrawer);
-Navigation.startSingleScreenApp({
-  screen: {
-    screen: "awesome-places.AuthScreen",
-    title: "Login"
-  }
-});
+
+Navigation.registerComponent(
+  "awesome-places.SideDrawer",
+  () => SideDrawer,
+  store,
+  Provider
+);
+
+export default () =>
+  Navigation.startSingleScreenApp({
+    screen: {
+      screen: "awesome-places.AuthScreen",
+      title: "Login"
+    }
+  });
 
 // import React, { Component } from "react";
 // import { View } from "react-native";
